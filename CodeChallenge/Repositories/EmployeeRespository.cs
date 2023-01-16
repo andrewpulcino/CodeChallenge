@@ -32,6 +32,20 @@ namespace CodeChallenge.Repositories
             return _employeeContext.Employees.SingleOrDefault(e => e.EmployeeId == id);
         }
 
+        // Add an overload to GetById() to enable explicit loading
+        // of the DirectReports navigation property.
+        public Employee GetById(string id, bool loadDirectReports = false)
+        {
+            var employee = GetById(id);
+
+            if (loadDirectReports)
+            {
+                _employeeContext.Entry(employee).Collection(emp => emp.DirectReports).Load();
+            }
+
+            return employee;
+        }
+
         public Task SaveAsync()
         {
             return _employeeContext.SaveChangesAsync();

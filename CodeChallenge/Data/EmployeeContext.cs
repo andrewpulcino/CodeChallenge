@@ -14,6 +14,18 @@ namespace CodeChallenge.Data
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Establish a relationship between Compensation objects
+            // and Employee objects.
+            modelBuilder.Entity<Compensation>()
+                //.HasNoKey()
+                .HasOne(comp => comp.Employee);
+        }
+
         public DbSet<Employee> Employees { get; set; }
+
+        // Add a set to store employee compensations
+        public DbSet<Compensation> Compensations { get; set; }
     }
 }
